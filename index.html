@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>The Official Boyfriend Test™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff4fa3; --pink-soft:#ffb8d9; --pink-deep:#c81f6f; --blush:#ffe3f0;
+  --black:#000000; --coal:#141014; --line:#3a2530;
+  --bg:#000000; --text:#fff0f7; --good:#7dffb3; --bad:#ff3b5c;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#000000; --text:#fff0f7; } }
+:root[data-theme="dark"]{ --bg:#000000; --text:#fff0f7; }
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{
+  background:var(--bg);
+  background-image:radial-gradient(rgba(255,79,163,.16) 1.6px,transparent 1.7px);
+  background-size:22px 22px;
+  color:var(--text);
+  font-family:'Grandstander',ui-rounded,'Comic Sans MS','Trebuchet MS',system-ui,sans-serif;
+  overflow-x:hidden;
+  transition:background-color .6s;
+}
+body.void{background-image:none}
+body.void .floaties{opacity:0}
+
+#app{
+  position:relative;z-index:2;
+  min-height:100dvh;max-width:440px;margin:0 auto;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:22px 16px calc(22px + env(safe-area-inset-bottom));
+  text-align:center;
+}
+.card{
+  width:100%;position:relative;
+  background:var(--coal);
+  border:3px solid var(--pink);
+  border-radius:30px 30px 30px 8px;
+  padding:26px 20px 22px;
+  box-shadow:8px 8px 0 var(--pink);
+}
+h1,h2{margin:.2em 0 .35em;line-height:1.1}
+h1{font-size:2rem;font-weight:900}
+h2{font-size:1.65rem;font-weight:900}
+p{font-size:1.1rem;line-height:1.45;margin:.4em 0}
+small{opacity:.8}
+.brand{color:var(--pink);font-weight:900;font-size:2rem;line-height:1;text-shadow:3px 3px 0 #000,5px 5px 0 var(--pink-deep)}
+.qnum{display:inline-block;background:var(--pink);color:#000;font-weight:700;border-radius:999px;padding:4px 14px;font-size:.9rem;transform:rotate(-2deg)}
+.soft{color:var(--pink-soft)}
+.pk{color:var(--pink)}
+
+.btn{
+  display:block;width:100%;
+  font:inherit;font-weight:700;font-size:1.2rem;
+  padding:15px 16px;margin-top:12px;
+  border:3px solid #000;border-radius:18px;
+  background:var(--pink);color:#000;
+  box-shadow:0 6px 0 var(--pink-deep);
+  cursor:pointer;touch-action:manipulation;user-select:none;
+  transition:transform .08s,box-shadow .08s,opacity .3s;
+}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--pink-deep)}
+.btn:focus-visible{outline:3px dashed var(--pink-soft);outline-offset:3px}
+.btn:disabled{opacity:.55}
+.btn.dark{background:#000;color:var(--pink);border-color:var(--pink);box-shadow:0 6px 0 var(--line)}
+.btn.ghost{background:transparent;color:#777;border-color:#333;box-shadow:none}
+.btn.hide{visibility:hidden}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;font-size:1.05rem}
+.opt .l{flex:none;width:32px;height:32px;border-radius:50%;background:#000;color:var(--pink);display:grid;place-items:center;font-size:.95rem}
+.opt.nah{background:#3b1426;color:#ff9cc8;border-color:var(--bad);box-shadow:0 6px 0 #1e0913}
+
+#catbox{display:flex;justify-content:center;align-items:flex-end;gap:6px;min-height:100px;margin:6px 0}
+.cat{display:block;filter:drop-shadow(0 4px 0 rgba(255,79,163,.35))}
+.msg{min-height:1.4em;font-size:1.12rem;line-height:1.4;margin:6px 0}
+.msg.good{color:var(--good)}
+.msg.bad{color:#ff8fbf}
+.wrong{display:inline-block;margin-top:8px;background:var(--bad);color:#fff;font-weight:900;font-size:1.5rem;padding:4px 14px;border-radius:10px;transform:rotate(-4deg);animation:shake .4s 3}
+.taunt{min-height:1.3em;color:var(--pink-soft);font-size:1rem}
+
+.arena{position:relative;transition:min-height .3s}
+.arena.open{min-height:250px}
+.btn.run{position:absolute;width:auto;margin:0;padding:10px 22px;transition:left .22s ease,top .22s ease}
+
+.bar{height:18px;border:3px solid var(--pink);border-radius:999px;overflow:hidden;margin:16px 0 6px;background:#000}
+.fill{height:100%;width:0;background:repeating-linear-gradient(45deg,var(--pink) 0 12px,var(--pink-soft) 12px 24px)}
+.ll{min-height:2.9em}
+
+.pile{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;min-height:4px}
+.pile .cat{animation:pop .35s}
+
+.score{font-size:5rem;font-weight:900;color:var(--pink);line-height:1;text-shadow:4px 4px 0 var(--pink-deep)}
+.score.broke{animation:shake .15s 8;color:#fff;text-shadow:4px 4px 0 var(--pink),-3px -3px 0 var(--pink-deep)}
+
+.blobs{position:relative;display:flex;justify-content:center;gap:18px;margin:18px 0 8px;height:130px;align-items:center}
+.blob{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:1.1rem;transition:transform .9s cubic-bezier(.5,1.6,.4,1)}
+.blob.b{background:#000;color:var(--pink);border:3px solid var(--pink)}
+.blob.p{background:var(--pink);color:#000;border:3px solid #000;mix-blend-mode:normal}
+.blobs.merge .b{transform:translateX(42px) rotate(-8deg)}
+.blobs.merge .p{transform:translateX(-42px) rotate(8deg)}
+.bheart{position:absolute;left:50%;top:50%;font-size:2.6rem;transform:translate(-50%,-50%) scale(0);transition:transform .5s .7s cubic-bezier(.5,2,.4,1);z-index:3}
+.blobs.merge .bheart{transform:translate(-50%,-50%) scale(1)}
+
+.couple{display:flex;justify-content:center;align-items:center;gap:0;margin:10px 0}
+.beat{font-size:2rem;animation:beat 1s infinite}
+
+.ln{opacity:0;animation:fadeUp .9s var(--d,0s) forwards}
+.lines p{font-size:1.25rem}
+.lines .big{font-size:1.45rem;font-weight:700;margin-top:.8em}
+
+.letter{background:var(--blush);color:#000;border-radius:18px 18px 18px 4px;padding:16px 18px;margin:16px 0 6px;text-align:left;transform:rotate(-1deg);box-shadow:5px 5px 0 var(--pink)}
+.letter p{font-size:1.12rem;margin:.35em 0}
+.letter b{color:var(--pink-deep)}
+.final{width:100%}
+.final p{font-size:2rem;font-weight:900;line-height:1.15;margin-bottom:28px}
+.final .btn{font-size:1.4rem}
+
+.receipt{background:var(--blush);color:#000;border-radius:14px;padding:14px 16px;margin:14px 0;text-align:left;font-size:1rem;
+  -webkit-mask:radial-gradient(circle 7px at 50% 0,transparent 98%,#000) 0 0/18px 100%,linear-gradient(#000,#000);
+}
+.receipt div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:2px dashed #e6a3c3}
+.receipt div:last-child{border-bottom:none}
+.receipt span{opacity:.65}
+.receipt .big b{color:var(--pink-deep);font-size:1.2rem}
+.party{font-size:3.4rem;animation:bounce .8s infinite}
+.siren{font-size:3rem;animation:siren .6s infinite}
+
+.drop{position:fixed;top:-70px;z-index:50;pointer-events:none;animation:fall linear forwards;line-height:1}
+.floaties{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;transition:opacity .6s}
+.floaties span{position:absolute;bottom:-50px;opacity:.28;animation:drift linear infinite}
+
+body.alarm::after{content:"";position:fixed;inset:0;z-index:40;pointer-events:none;background:var(--bad);animation:flash .35s 6}
+
+.pop{animation:pop .4s cubic-bezier(.4,1.8,.5,1)}
+.shake{animation:shake .45s}
+.bounce{animation:bounce .6s 2}
+.bob{animation:bob 1s ease-in-out infinite}
+.poof{animation:poof .4s forwards}
+
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px) rotate(-3deg)}40%{transform:translateX(9px) rotate(3deg)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-18px)}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.35)}}
+@keyframes fall{to{transform:translateY(115vh) rotate(var(--r,0deg))}}
+@keyframes drift{to{transform:translateY(-115vh) rotate(30deg)}}
+@keyframes flash{50%{opacity:.45}0%,100%{opacity:0}}
+@keyframes poof{to{transform:scale(0) rotate(40deg);opacity:0}}
+@keyframes siren{50%{transform:scale(1.2) rotate(-8deg)}}
+
+@media (prefers-reduced-motion: reduce){
+  .floaties{display:none}
+  .bob,.party,.siren,.beat{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="floaties" id="floaties"></div>
+<main id="app"></main>
+
+<script>
+const app = document.getElementById('app');
+const $ = s => app.querySelector(s);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+let partyTimer = null;
+
+function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+function lock(){ app.querySelectorAll('button').forEach(b => b.disabled = true); }
+function show(html){ app.innerHTML = `<div class="card pop">${html}</div>`; window.scrollTo(0,0); }
+function say(html, cls=''){
+  const m = $('#msg'); if(!m) return;
+  m.className = 'msg ' + cls; m.innerHTML = html;
+  void m.offsetWidth; m.classList.add('pop');
+}
+function setCat(svg, anim){
+  const c = $('#catbox'); if(!c) return;
+  c.innerHTML = svg;
+  if(anim){ c.classList.remove('shake','bounce'); void c.offsetWidth; c.classList.add(anim); }
+}
+
+/* ---------- cats ---------- */
+function heart(x,y){
+  return `<path transform="translate(${x-8} ${y-7})" d="M8 14 L1.5 7 A4 4 0 0 1 8 2.5 A4 4 0 0 1 14.5 7 Z" fill="#ff2d7a"/>`;
+}
+function cat(mood='happy', color='pink', size=110, cls=''){
+  const fur   = color === 'pink' ? '#ff6fb4' : '#050505';
+  const line  = color === 'pink' ? '#000'    : '#ffb8d9';
+  const inner = color === 'pink' ? '#ffd4e8' : '#ff4fa3';
+  const sw = 4;
+  let eyes, mouth = `<path d="M52 77 q4 5 8 0 q4 5 8 0" fill="none" stroke="${line}" stroke-width="3" stroke-linecap="round"/>`, extra = '';
+  switch(mood){
+    case 'happy':
+      eyes = `<path d="M36 63 q7 -10 14 0 M70 63 q7 -10 14 0" fill="none" stroke="${line}" stroke-width="${sw}" stroke-linecap="round"/>`;
+      mouth = `<path d="M50 76 q10 12 20 0 z" fill="${line}"/>`;
+      break;
+    case 'love':
+      eyes = heart(43,61) + heart(77,61);
+      break;
+    case 'angry':
+      eyes = `<circle cx="43" cy="63" r="5" fill="${line}"/><circle cx="77" cy="63" r="5" fill="${line}"/>
+              <path d="M31 50 L53 58 M89 50 L67 58" stroke="${line}" stroke-width="${sw}" stroke-linecap="round"/>`;
+      mouth = `<path d="M50 84 q10 -9 20 0" fill="none" stroke="${line}" stroke-width="3" stroke-linecap="round"/>`;
+      extra = `<text x="88" y="30" font-size="26">💢</text>`;
+      break;
+    case 'shock':
+      eyes = `<circle cx="43" cy="62" r="9" fill="#fff"/><circle cx="43" cy="62" r="3.5" fill="#000"/>
+              <circle cx="77" cy="62" r="9" fill="#fff"/><circle cx="77" cy="62" r="3.5" fill="#000"/>`;
+      mouth = `<ellipse cx="60" cy="82" rx="5" ry="7" fill="${line}"/>`;
+      extra = `<text x="92" y="28" font-size="22">❗</text>`;
+      break;
+    case 'cry':
+      eyes = `<circle cx="43" cy="63" r="6" fill="${line}"/><circle cx="77" cy="63" r="6" fill="${line}"/>
+              <path d="M39 70 q-4 11 0 15 q4 -4 0 -15 M81 70 q-4 11 0 15 q4 -4 0 -15" fill="#7fd3ff"/>`;
+      mouth = `<path d="M50 84 q10 -8 20 0" fill="none" stroke="${line}" stroke-width="3" stroke-linecap="round"/>`;
+      break;
+    default:
+      eyes = `<circle cx="43" cy="62" r="7" fill="${line}"/><circle cx="45" cy="59" r="2.2" fill="${color==='pink'?'#fff':'#000'}"/>
+              <circle cx="77" cy="62" r="7" fill="${line}"/><circle cx="79" cy="59" r="2.2" fill="${color==='pink'?'#fff':'#000'}"/>`;
+  }
+  return `<svg class="cat ${cls}" width="${size}" height="${Math.round(size*.92)}" viewBox="0 0 120 110" aria-hidden="true">
+    <polygon points="18,50 27,6 53,34" fill="${fur}" stroke="${line}" stroke-width="2.5" stroke-linejoin="round"/>
+    <polygon points="102,50 93,6 67,34" fill="${fur}" stroke="${line}" stroke-width="2.5" stroke-linejoin="round"/>
+    <polygon points="26,40 29,18 44,33" fill="${inner}"/>
+    <polygon points="94,40 91,18 76,33" fill="${inner}"/>
+    <ellipse cx="60" cy="65" rx="44" ry="38" fill="${fur}" stroke="${line}" stroke-width="2.5"/>
+    <ellipse cx="29" cy="77" rx="7" ry="4" fill="${color==='pink'?'#ff2d7a':'#ff4fa3'}" opacity=".5"/>
+    <ellipse cx="91" cy="77" rx="7" ry="4" fill="${color==='pink'?'#ff2d7a':'#ff4fa3'}" opacity=".5"/>
+    ${eyes}
+    <path d="M56 70 h8 l-4 4.5 z" fill="${color==='pink'?'#000':'#ff4fa3'}"/>
+    ${mouth}
+    <path d="M12 70 L33 73 M12 79 L33 77 M108 70 L87 73 M108 79 L87 77" stroke="${line}" stroke-width="2" stroke-linecap="round"/>
+    ${extra}
+  </svg>`;
+}
+const couple = (s=100) => `<div class="couple">${cat('love','black',s)}<span class="beat">🩷</span>${cat('love','pink',s)}</div>`;
+
+/* ---------- effects ---------- */
+const EMOJI = ['🐱','😻','😸','😼','🐈‍⬛','🐈','🩷','🖤','🐾','💗'];
+function rain(n=24){
+  for(let i=0;i<n;i++){
+    const d = document.createElement('div');
+    d.className = 'drop';
+    if(Math.random() < .4){
+      d.innerHTML = cat(pick(['happy','love','shock','neutral']), Math.random()<.5?'pink':'black', 40 + Math.random()*24);
+    } else {
+      d.textContent = pick(EMOJI);
+      d.style.fontSize = (22 + Math.random()*24) + 'px';
+    }
+    d.style.left = (Math.random()*96) + 'vw';
+    d.style.animationDuration = (1.8 + Math.random()*2.2) + 's';
+    d.style.animationDelay = (Math.random()*.7) + 's';
+    d.style.setProperty('--r', (Math.random()*720-360) + 'deg');
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 5000);
+  }
+}
+(function floaties(){
+  const f = document.getElementById('floaties');
+  for(let i=0;i<14;i++){
+    const s = document.createElement('span');
+    s.textContent = pick(['🐱','🩷','🖤','🐾','😺','🐈‍⬛']);
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.fontSize = (16 + Math.random()*18) + 'px';
+    s.style.animationDuration = (12 + Math.random()*14) + 's';
+    s.style.animationDelay = (-Math.random()*20) + 's';
+    f.appendChild(s);
+  }
+})();
+
+function loading(lines, next, ms=2800){
+  show(`<h2>please wait…</h2>
+    <div id="catbox">${cat('neutral','black',100,'bob')}</div>
+    <p class="ll" id="ll">${lines[0]}</p>
+    <div class="bar"><div class="fill" id="fill"></div></div>`);
+  setTimeout(() => { const f=$('#fill'); if(f){ f.style.transition=`width ${ms}ms ease-in-out`; f.style.width='100%'; } }, 60);
+  let i = 0;
+  const t = setInterval(() => { i++; const l=$('#ll'); if(l && i<lines.length) l.textContent = lines[i]; }, ms/lines.length);
+  setTimeout(() => { clearInterval(t); next(); }, ms + 350);
+}
+
+/* ---------- screens ---------- */
+function intro(){
+  clearInterval(partyTimer);
+  document.body.classList.remove('void');
+  show(`<div class="siren">🚨</div>
+    <h2>IMPORTANT</h2>
+    <p><b class="pk">Rihan</b>, you have been selected for the</p>
+    <div class="brand">OFFICIAL<br>BOYFRIEND TEST™</div>
+    <div id="catbox">${cat('neutral','black',100)}${cat('angry','pink',100)}</div>
+    <p>This test will determine whether you are, in fact, <b class="pk">a good boyfriend.</b></p>
+    <button class="btn" id="go">begin test</button>`);
+  $('#go').onclick = () => { buzz(40); loading(['loading boyfriend data…','scanning for red flags…','none found (for now)','waking up the cats…'], q1); };
+}
+
+function q1(){
+  let stage = 0, dodges = 0;
+  show(`<span class="qnum">question 1 of 4</span>
+    <h2>Do you love me?</h2>
+    <div id="catbox">${cat('love','pink')}</div>
+    <div id="msg" class="msg"></div>
+    <div class="taunt" id="taunt"></div>
+    <div class="arena" id="arena">
+      <button class="btn" id="yes">🩷 YES</button>
+      <button class="btn dark" id="no">💀 NO</button>
+    </div>`);
+  const no = $('#no'), yes = $('#yes'), arena = $('#arena');
+  const taunts = ['nope 😼','too slow','the button is scared of you','why are you still trying','the cats are watching','ok this is embarrassing now'];
+
+  function dodge(){
+    const aw = arena.clientWidth, ah = arena.clientHeight;
+    const top0 = yes.offsetTop + yes.offsetHeight + 14;
+    const x = Math.random() * Math.max(0, aw - no.offsetWidth);
+    const y = top0 + Math.random() * Math.max(0, ah - top0 - no.offsetHeight);
+    no.style.left = x + 'px'; no.style.top = y + 'px';
+  }
+  no.addEventListener('click', () => {
+    if(stage === 0){
+      stage = 1; buzz(90);
+      setCat(cat('shock','pink'), 'shake');
+      say('<b>excuse me????</b><br>TRY AGAIN.<br><small>that answer is not available.</small>','bad');
+    } else if(stage === 1){
+      stage = 2; buzz([120,60,120]);
+      setCat(cat('angry','pink',150) , 'shake');
+      say('oh okay.<br>so we’re <b>choosing violence</b> today.<br><span class="wrong">WRONG ANSWER.</span>','bad');
+      rain(10);
+      arena.classList.add('open'); no.classList.add('run');
+      setTimeout(dodge, 50);
+    }
+  });
+  no.addEventListener('pointerdown', e => {
+    if(stage < 2) return;
+    e.preventDefault(); dodges++; buzz(25); dodge();
+    $('#taunt').textContent = taunts[(dodges-1) % taunts.length];
+    if(dodges >= 7){
+      no.classList.add('poof'); setTimeout(() => no.remove(), 420);
+      arena.classList.remove('open'); $('#taunt').textContent = '';
+      setCat(cat('happy','pink',130), 'bounce');
+      say('the “no” button has been removed<br><b>for technical reasons.</b> 🔧');
+    }
+  });
+  yes.onclick = () => {
+    lock(); rain(28); buzz(40);
+    setCat(cat('love','pink',150), 'bounce');
+    say('✅ <b>correct.</b> obviously.','good');
+    setTimeout(q2, 1700);
+  };
+}
+
+function q2(){
+  let wrongs = 0;
+  show(`<span class="qnum">question 2 of 4</span>
+    <h2>Who is the cutest person in this relationship?</h2>
+    <div id="catbox">${cat('neutral','black')}</div>
+    <div id="msg" class="msg"></div>
+    <button class="btn opt" data-a="a"><span class="l">A</span>Rihan</button>
+    <button class="btn opt" data-a="b"><span class="l">B</span>Mahi</button>
+    <button class="btn opt" data-a="c"><span class="l">C</span>Obviously Mahi, why are we wasting time?</button>`);
+  app.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    if(b.dataset.a === 'a'){
+      wrongs++; buzz(120); b.classList.add('nah');
+      setCat(cat('angry','black',120), 'shake');
+      say(wrongs > 1
+        ? 'still incorrect.<br><small>rihan is cute. just not the cutest.</small>'
+        : 'interesting choice.<br><b>unfortunately, incorrect.</b>', 'bad');
+    } else {
+      lock(); rain(28); buzz(40);
+      setCat(cat('happy','black',120) + cat('love','pink',120), 'bounce');
+      say('✅ <b>CORRECT</b><br>You may continue.','good');
+      setTimeout(q3, 1800);
+    }
+  });
+}
+
+function q3(){
+  show(`<span class="qnum">question 3 of 4</span>
+    <h2>Would you still love me if I stole your hoodie?</h2>
+    <div id="catbox">${cat('neutral','pink')}</div>
+    <div id="msg" class="msg"></div>
+    <div id="btns">
+      <button class="btn" id="y">YES 🩷</button>
+      <button class="btn dark" id="n">NO 🖤</button>
+    </div>`);
+  $('#y').onclick = () => {
+    lock(); rain(22);
+    setCat(cat('love','pink',130), 'bounce');
+    say('good answer.<br><small>(it’s already in my wardrobe btw)</small>','good');
+    setTimeout(q4, 2000);
+  };
+  $('#n').onclick = () => {
+    lock(); buzz([200,80,200,80,200]);
+    document.body.classList.add('alarm');
+    setCat(cat('shock','pink',140), 'shake');
+    say('🚨 <b>relationship-threatening answer detected</b> 🚨','bad');
+    setTimeout(() => {
+      document.body.classList.remove('alarm');
+      setCat(cat('cry','pink',140), 'bounce');
+      say('<small>hypothetical scenario:</small><br><b>I have already stolen it.</b> 😭');
+      const btns = $('#btns'); btns.innerHTML = '';
+      const c = document.createElement('button');
+      c.className = 'btn'; c.textContent = '…fine. keep going';
+      c.onclick = q4; btns.appendChild(c);
+    }, 2300);
+  };
+}
+
+function q4(){
+  const counts = {hug:0, kiss:0, money:0};
+  let total = 0;
+  const replies = {
+    hug:   ['a hug?? <b>just</b> a hug???', 'still just a hug. wow.', 'the cats are filing a complaint.'],
+    kiss:  ['only a kiss? thinking small today i see', 'the cats are disappointed in you.', 'a kiss is nice. it is not enough.'],
+    money: ['a million pounds is a great start.<br><b>but no.</b>', 'money can’t buy me.<br><small>(it can. but still no.)</small>', 'stop choosing this one 😭']
+  };
+  show(`<span class="qnum">question 4 of 4</span>
+    <h2>What do I deserve?</h2>
+    <div id="catbox">${cat('neutral','black')}</div>
+    <div id="msg" class="msg"></div>
+    <div class="pile" id="pile"></div>
+    <button class="btn opt" data-a="hug"><span class="l">🤗</span>A hug</button>
+    <button class="btn opt" data-a="kiss"><span class="l">💋</span>A kiss</button>
+    <button class="btn opt" data-a="money"><span class="l">💷</span>A million pounds</button>
+    <button class="btn opt" data-a="all"><span class="l">✨</span>All of the above</button>`);
+  app.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const k = b.dataset.a;
+    if(k === 'all'){
+      lock(); rain(45); buzz([40,40,40]);
+      setCat(cat('love','black',120) + cat('love','pink',120), 'bounce');
+      say('✅ <b>CORRECT.</b><br>you’re learning.','good');
+      setTimeout(() => loading(['calculating boyfriend score…','consulting the cats…','adding bonus points for being cute…','double checking…'], score), 1900);
+      return;
+    }
+    total++; buzz(110);
+    const r = replies[k]; const txt = r[counts[k]++ % r.length];
+    setCat(cat(pick(['angry','shock','cry']), 'black', 120), 'shake');
+    say(txt + (total >= 3 ? '<br><small>psst… try the last one</small>' : ''), 'bad');
+    const pile = $('#pile');
+    for(let i=0;i<2;i++) pile.insertAdjacentHTML('beforeend', cat(pick(['angry','shock','cry','neutral']), Math.random()<.5?'pink':'black', 42));
+    rain(6);
+  });
+}
+
+function score(){
+  show(`<h2>your boyfriend score</h2>
+    <div class="score" id="sc">0</div>
+    <p id="sub">out of 100</p>
+    <div id="msg" class="msg"></div>
+    <div id="catbox">${cat('happy','black',100)}${cat('happy','pink',100)}</div>
+    <button class="btn hide" id="nx">wait, there’s more</button>`);
+  const sc = $('#sc'); let v = 0;
+  const t = setInterval(() => {
+    v += 3; sc.textContent = Math.min(v, 100);
+    if(v >= 100){
+      clearInterval(t);
+      setTimeout(() => {
+        sc.textContent = '1000'; sc.classList.add('broke'); buzz([60,30,60,30,200]);
+        $('#sub').innerHTML = 'out of 100 <small>(you broke the system)</small>';
+        say('rating: <b>certified keeper</b> 🖤🩷','good');
+        rain(40);
+        $('#nx').classList.remove('hide');
+      }, 600);
+    }
+  }, 40);
+  $('#nx').onclick = colours;
+}
+
+function colours(){
+  show(`<h2>pink + black</h2>
+    <p class="soft">your favourite colour is black.<br>mine is pink.</p>
+    <div class="blobs" id="blobs">
+      <div class="blob b">you 🖤</div>
+      <div class="bheart">💗</div>
+      <div class="blob p">me 🩷</div>
+    </div>
+    <div id="msg" class="msg"></div>
+    <button class="btn" id="mix">put us together ✨</button>`);
+  const mix = $('#mix');
+  mix.onclick = () => {
+    mix.disabled = true; buzz(50);
+    $('#blobs').classList.add('merge');
+    setTimeout(() => {
+      rain(20);
+      say(`and look at that.<br><b>the best colour combo ever made.</b><br><br>
+        <span class="soft">black makes pink pop.<br>pink makes black softer.<br>honestly? that’s kind of us.</span>`);
+      mix.textContent = 'continue'; mix.disabled = false;
+      mix.onclick = sweet;
+    }, 1300);
+  };
+}
+
+function sweet(){
+  show(`<div class="lines">
+      <p class="ln" style="--d:.2s">okay okay…</p>
+      <p class="ln" style="--d:1.4s">enough bullying you.</p>
+      <p class="ln" style="--d:2.8s">there wasn’t actually a test.</p>
+      <p class="ln big" style="--d:4.4s">i just wanted an excuse to make something for you because <span class="pk">I love you.</span> 🤍</p>
+    </div>
+    <div class="letter ln" style="--d:6.4s">
+      <p>my beautiful baby,</p>
+      <p>i can’t believe someone like me saw a guy from afar and fell for him, but i’m so glad it was you out of everyone.</p>
+      <p><b>you’re perfect to me.</b> 🖤🩷</p>
+    </div>
+    <div class="ln" style="--d:8.6s">${couple(96)}</div>
+    <button class="btn ln" style="--d:9.8s" id="last" disabled>one last question...</button>`);
+  setTimeout(() => { const b=$('#last'); if(b) b.disabled = false; }, 9800);
+  $('#last').onclick = final;
+}
+
+function final(){
+  document.body.classList.add('void');
+  app.innerHTML = `<div class="final">
+    <p class="ln" style="--d:.8s">Rihan, will you keep being my boyfriend?</p>
+    <div class="ln" style="--d:2s" id="fb">
+      <button class="btn" id="fy">YES ❤️</button>
+      <button class="btn ghost" id="fn">NO</button>
+    </div>
+    <div id="msg" class="msg" style="margin-top:20px"></div>
+  </div>`;
+  const fn = $('#fn');
+  let gone = false;
+  const nope = e => {
+    if(gone) return; gone = true; e.preventDefault(); buzz(80);
+    say('<b>nice try.</b>','bad');
+    fn.classList.add('poof'); setTimeout(() => fn.remove(), 420);
+    setTimeout(() => say('<b>nice try.</b><br>(that’s not an option cutie!) 😼','bad'), 1100);
+  };
+  fn.addEventListener('pointerdown', nope);
+  fn.addEventListener('click', nope);
+  $('#fy').onclick = () => { lock(); buzz([50,50,50,50,300]); congrats(); };
+}
+
+function congrats(){
+  document.body.classList.remove('void');
+  show(`<div class="party">🎉</div>
+    <h1 class="brand">CONGRATULATIONS</h1>
+    <p>Your boyfriend subscription has been <b class="pk">successfully renewed.</b></p>
+    <div class="receipt">
+      <div><span>subscriber</span><b>Rihan 🖤</b></div>
+      <div><span>plan</span><b>Boyfriend Premium</b></div>
+      <div><span>together for</span><b>4 months</b></div>
+      <div><span>price</span><b>free (paid in hugs)</b></div>
+      <div><span>cats involved</span><b>too many</b></div>
+      <div class="big"><span>next renewal</span><b>indefinitely 🩷</b></div>
+    </div>
+    ${couple(90)}
+    <button class="btn dark" id="again">take the test again</button>`);
+  rain(60);
+  let n = 0;
+  clearInterval(partyTimer);
+  partyTimer = setInterval(() => { rain(14); if(++n > 10) clearInterval(partyTimer); }, 2200);
+  $('#again').onclick = intro;
+}
+
+intro();
+</script>
+</body>
+</html>
